@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+#define int long long
+#define pii pair<int,int>
+#define fst first
+#define snd second
+#define pb push_back
+#define all(x) x.begin(),x.end()
+#define endl "\n"
+using namespace std;
+
+vector<pii> points, hull;
+
+bool turn(pii p) {
+    pii a=hull[hull.size()-2];
+    pii b=hull.back();
+
+    int ans = (p.snd-a.snd)*(p.fst-b.fst);
+    ans -= (p.snd-b.snd)*(p.fst-a.fst);
+    return ans<=0;
+}
+
+void solve(int n) {
+    for(int i=0; i<n; ++i) {
+        while (hull.size()>=2 and turn(points[i])) hull.pop_back();
+        hull.pb(points[i]);
+    }
+    int k=hull.size();
+    for(int i=n-1; i>=0; --i) {
+        while (hull.size()>k and turn(points[i])) hull.pop_back();
+        hull.pb(points[i]);
+    }
+    hull.pop_back();
+}
+
+map<pii,bool> vst;
+int32_t main() {
+    cin.tie(0)->ios_base::sync_with_stdio(false);
+    int n;
+    while(cin >> n and n) {
+        vst.clear();
+        points.clear();
+        hull.clear();
+
+        for(int i=0; i<n; ++i) {
+            int x, y;
+            cin >> x >> y;
+            if(!vst[{x,y}]) {
+                vst[{x,y}]=1;
+                points.pb({x,y});
+            }
+        }
+        sort(all(points));
+
+        if(n<=2) hull=points;
+        else solve(n);
+
+        cout << hull.size() << endl;
+        for(pii h : hull) cout << h.fst << " " << h.snd << endl;
+    }
+}
