@@ -14,8 +14,8 @@ bool turn(pii p) {
     pii a=hull[hull.size()-2];
     pii b=hull.back();
 
-    int ans = (p.snd-a.snd)*(p.fst-b.fst);
-    ans -= (p.snd-b.snd)*(p.fst-a.fst);
+    int ans = (p.snd-b.snd)*(p.fst-a.fst);
+    ans -= (p.snd-a.snd)*(p.fst-b.fst);
     return ans<=0;
 }
 
